@@ -1,4 +1,4 @@
-import json,requests
+import json,requests, datetime
 
 class caramelPopcorn:
     def __init__(self):
@@ -10,6 +10,11 @@ class caramelPopcorn:
         self.getdetailurl = "https://imdb8.p.rapidapi.com/title/get-details"
         self.movid=""
         self.genres=[]
+        self.last_watched = "1975"
+        self.watched=0
+        self.rating=0
+        self.count=0
+        self.runtime=""
 
         self.headers = {
             'x-rapidapi-key': "5ea8bab0admsh7964d3fcff9774bp1ad826jsn7f99b879accb",
@@ -39,8 +44,10 @@ class caramelPopcorn:
         print(self.details['results'][0]['year'])
         
         self.movid+=self.details['results'][0]['id'].split('/')[2]
+        self.runtime=self.details['results'][0]['runningTimeInMinutes']
+        #print(self.runtime)
 
-        self.response.close()
+        #self.response.close()
         return self.movid
 
     
@@ -60,9 +67,27 @@ class caramelPopcorn:
     
         print (self.genres)
 
+    
+    def watch_status(self,answer):
+
+        #self.status = self.answer.lower() 
+
+        if(answer.lower() == "yes"):
+            self.x = datetime.datetime.now()
+            self.last_watched = self.x.strftime("%x")
+            self.watched=1
+        
+        print (self.last_watched) 
+        print (self.watched)
+            
+
 
 
     
 tub=caramelPopcorn()
 name=input("Enter Movie Name: ")
 tub.getgenre(name)
+answer=input("Have you watched this movie before?")
+tub.watch_status(answer)
+
+
